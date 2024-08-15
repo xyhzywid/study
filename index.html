@@ -1,44 +1,200 @@
 <!DOCTYPE html>
+<!-- 声明文档类型为HTML5 -->
 <html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>第一个网页</title>
+  <!-- 设置页面语言为中文 -->
+  <head>
+    <meta charset="UTF-8" />
+    <!-- 定义文档字符集为UTF-8，支持多语言字符 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 使页面在移动设备上有更好的展示效果 -->
+    <title>LDX的个人博客</title>
+    <!-- 定义网页标题，显示在浏览器标签上 -->
     <style>
-        body{
-            margin: 0;
+      /* 页面基础样式 */
+      body {
+        margin: 0; /* 移除页面的默认边距 */
+        height: 100vh; /* 将body的高度设置为视口高度的100% */
+        background-color: #eee; /* 设置背景颜色为浅灰色 */
+      }
+
+      /* 为了调试页面元素，可选择开启以下注释，显示所有元素的灰色的边框 */
+      /* * {
+        border: 1px solid grey;
+      } */
+
+      /* 自定义类 */
+      .yinYing {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
+        /* 添加阴影效果，提供视觉上的立体感 */
+      }
+
+      .flex {
+        display: flex; /* 使元素成为弹性盒子布局，可以使子元素沿着主轴排列 */
+      }
+
+      .white {
+        background-color: white; /* 设置背景颜色为白色 */
+      }
+
+      .flex1 {
+        flex: 1; /* 使元素占据剩余空间，自动调整宽度或高度 */
+      }
+
+      .column {
+        flex-direction: column; /* 将弹性盒子的子元素排列方向设置为列方向（垂直排列） */
+      }
+
+      .mg8 {
+        margin: 8px; /* 为元素四周添加8像素的外边距 */
+      }
+
+      .mgr8 {
+        margin-right: 8px; /* 仅为元素的右侧添加8像素的外边距 */
+      }
+
+      .mgt8 {
+        margin-top: 8px; /* 仅为元素的顶部添加8像素的外边距 */
+      }
+
+      .daoHang {
+        padding: 10px 20px; /* 为元素内容添加上下10像素，左右20像素的内边距 */
+        border-bottom: 1px solid rgb(190, 188, 188); /* 设置底部边框为1像素宽，颜色为灰色 */
+        font-size: 14px; /* 设置文字大小为14像素 */
+        color: #666; /* 设置文字颜色为深灰色 */
+        text-align: center; /* 使文字在水平上居中对齐 */
+        line-height: 40px; /* 设置行高为40像素，使文字在垂直方向居中对齐 */
+      }
+
+      /* 响应式设计，当屏幕宽度小于600像素时，应用以下样式 */
+      @media (max-width: 600px) {
+        .ceBian {
+          display: none; /* 隐藏侧边栏 */
         }
+        .neiRong {
+          flex-direction: column; /* 将内容区的子元素排列方向改为垂直方向 */
+        }
+        .shuJvQu {
+          flex-direction: column; /* 将数据区的子元素排列方向改为垂直方向 */
+        }
+        .qiTaQv {
+          margin-left: 8px; /* 仅为元素的左侧添加8像素的外边距 */
+        }
+        .shuJv {
+          margin: 0 0 8px; /* 为元素的底部添加8像素的外边距，清除顶部和左右边距 */
+          flex: auto; /* 允许元素根据内容自动调整大小 */
+        }
+      }
+
+      .neiRong::-webkit-scrollbar {
+        display: none; /* 隐藏滚动条（适用于webkit内核浏览器，如Chrome） */
+      }
     </style>
-</head>
-    <body> 
-        <div style = "
-            background-color: #4190de;
-            text-align: center;
-            padding: 40px;
-        ">
-            <img src = 'https://img2.baidu.com/it/u=542419179,2173802594&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=998' alt = "kwc" width = "80px" height = "80px">
+  </head>
+  <body class="flex">
+    <!-- 应用弹性盒子布局，使子元素横向排列 -->
+    <!-- 侧边栏 -->
+    <div style="width: 200px; z-index: 2" class="ceBian white yinYing">
+      <!-- 设置侧边栏宽度为200像素，背景颜色为白色，添加阴影，并确保它位于页面的上层 -->
+
+      <!-- 头像栏 -->
+      <div
+        style="
+          padding: 10px;
+          align-items: center;
+          justify-content: center;
+          border-bottom: 1px solid #999;
+        "
+        class="flex"
+      >
+        <!-- 为头像栏设置内边距，并居中对齐内容，添加底部边框 -->
+        <img
+          src="https://img2.baidu.com/it/u=542419179,2173802594&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=998"
+          width="40px"
+          height="40px"
+          alt="ldx"
+        />
+        <div style="margin-left: 10px">LDX</div>
+        <!-- 添加左边距10像素，显示用户名称 -->
+      </div>
+
+      <!-- 导航栏 -->
+      <div class="flex1">
+        <div class="daoHang">导航</div>
+        <!-- 导航项 -->
+        <div class="daoHang">导航</div>
+        <div class="daoHang">导航</div>
+        <div class="daoHang">导航</div>
+        <div class="daoHang">导航</div>
+        <div class="daoHang">导航</div>
+      </div>
+    </div>
+
+    <!-- 主区域 -->
+    <div class="flex1 flex column">
+      <!-- 设置主区域为弹性盒子布局，垂直排列子元素，并占据剩余空间 -->
+
+      <!-- 头部栏 -->
+      <div style="height: 60px; z-index: 1" class="white yinYing">
+        <!-- 设置头部栏高度为60像素，背景颜色为白色，添加阴影，确保它位于较低层次 -->
+      </div>
+
+      <!-- 内容区 -->
+      <div style="overflow: auto" class="neiRong flex1 flex">
+        <!-- 设置内容区为弹性盒子布局，允许内容溢出时出现滚动条，子元素水平排列并占据剩余空间 -->
+
+        <!-- 正文区 -->
+        <div style="flex: 3" class="flex column mg8">
+          <!-- 设置正文区占据主区域的三分之二，并为其子元素垂直排列，四周添加8像素外边距 -->
+
+          <!-- 数据区 -->
+          <div class="shuJvQu flex">
+            <!-- 数据块 -->
+            <div style="height: 100px" class="shuJv flex1 white mgr8 yinYing">
+              <!-- 设置数据块高度为100像素，白色背景，添加右边距和阴影效果 -->
+            </div>
+            <div
+              style="height: 100px"
+              class="shuJv flex1 white mgr8 yinYing"
+            ></div>
+            <div
+              style="height: 100px"
+              class="shuJv flex1 white mgr8 yinYing"
+            ></div>
+            <div style="height: 100px" class="shuJv flex1 white yinYing"></div>
+          </div>
+
+          <!-- 列表区 -->
+          <div class="flex column">
+            <!-- 列表项 -->
+            <div style="height: 160px" class="white mgt8 yinYing"></div>
+            <!-- 设置列表项高度为160像素，白色背景，添加顶部外边距和阴影效果 -->
+            <div style="height: 160px" class="white mgt8 yinYing"></div>
+            <div style="height: 160px" class="white mgt8 yinYing"></div>
+            <div style="height: 160px" class="white mgt8 yinYing"></div>
+            <div style="height: 160px" class="white mgt8 yinYing"></div>
+            <div style="height: 160px" class="white mgt8 yinYing"></div>
+            <div style="height: 160px" class="white mgt8 yinYing"></div>
+          </div>
         </div>
 
-        <div style = "
-            max-width: 700px;
-            margin: 30px auto;
-            padding: 15px;
-            line-height: 1.7;
-            color: #b31ab3;
-        ">
-            <p>文本文本文本文本</p>
-            <p>文本</p>
-            <p>文本</p>
-            <p>文本</p>
-            <p>文本</p>
-        </div>:
-        <div style = "
-            background-color: #4190de;
-            text-align: center;
-            padding: 12px;
-        ">
-            <p>我的网站</p>
-            <a>我的链接</a>
+        <!-- 其他区 -->
+        <div style="flex: 1" class="qiTaQv flex column mgr8 mgt8">
+          <!-- 设置其他区占据主区域的四分之一，并为其子元素垂直排列，添加右边距和顶部外边距 -->
+
+          <!-- 提示区 -->
+          <div style="height: 150px" class="white yinYing">
+            <!-- 设置提示区高度为150像素，背景颜色为白色，并添加阴影效果 -->
+          </div>
+
+          <!-- 消息区 -->
+          <div style="height: 300px" class="white mgt8 yinYing">
+            <!-- 设置消息区高度为300像素，背景颜色为白色，添加顶部外边距和阴影效果 -->
+          </div>
+          <div style="height: 260px" class="white mgt8 yinYing">
+            <!-- 设置消息区高度为260像素，背景颜色为白色，添加顶部外边距和阴影效果 -->
+          </div>
         </div>
-    </body>
+      </div>
+    </div>
+  </body>
 </html>
