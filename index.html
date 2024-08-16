@@ -1,200 +1,351 @@
 <!DOCTYPE html>
-<!-- 声明文档类型为HTML5 -->
 <html lang="zh-CN">
-  <!-- 设置页面语言为中文 -->
   <head>
     <meta charset="UTF-8" />
-    <!-- 定义文档字符集为UTF-8，支持多语言字符 -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- 使页面在移动设备上有更好的展示效果 -->
     <title>LDX的个人博客</title>
-    <!-- 定义网页标题，显示在浏览器标签上 -->
     <style>
-      /* 页面基础样式 */
+      /* 设置 body 元素的基本样式 */
       body {
-        margin: 0; /* 移除页面的默认边距 */
-        height: 100vh; /* 将body的高度设置为视口高度的100% */
-        background-color: #eee; /* 设置背景颜色为浅灰色 */
+        margin: 0; /* 去掉默认的页面边距 */
+        font-family: "Arial", sans-serif; /* 设置字体为 Arial */
+        background: linear-gradient(
+          to bottom right,
+          #3498db,
+          #5b9fe4
+        ); /* 设置背景为从左上到右下的线性渐变色 */
+        color: #333; /* 设置文本颜色为深灰色 */
+        display: flex; /* 使用 Flexbox 布局 */
+        flex-direction: column; /* Flexbox 方向为列（垂直布局） */
+        min-height: 100vh; /* 设置最小高度为 100% 视窗高度 */
       }
 
-      /* 为了调试页面元素，可选择开启以下注释，显示所有元素的灰色的边框 */
-      /* * {
-        border: 1px solid grey;
-      } */
-
-      /* 自定义类 */
-      .yinYing {
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
-        /* 添加阴影效果，提供视觉上的立体感 */
+      /* 定义全局 CSS 变量，便于统一管理颜色等样式 */
+      :root {
+        --primary-color: #ffffff; /* 主色，白色 */
+        --secondary-color: #3498db; /* 次色，蓝色 */
+        --accent-color: #e74c3c; /* 强调色，红色 */
+        --light-color: #ecf0f1; /* 浅色，淡灰色 */
+        --dark-color: #333; /* 深色，深灰色 */
+        --shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 阴影效果，黑色半透明 */
       }
 
-      .flex {
-        display: flex; /* 使元素成为弹性盒子布局，可以使子元素沿着主轴排列 */
+      /* 确保滚动条样式应用于 .content */
+      .content {
+        overflow: auto; /* 使内容区域可以滚动 */
+        height: 100vh; /* 确保内容区域有足够的高度显示滚动条 */
       }
 
-      .white {
-        background-color: white; /* 设置背景颜色为白色 */
+      /* 针对Webkit内核浏览器（如Chrome, Safari）的自定义滚动条样式 */
+      .content::-webkit-scrollbar {
+        width: 10px !important; /* 滚动条的宽度 */
       }
 
-      .flex1 {
-        flex: 1; /* 使元素占据剩余空间，自动调整宽度或高度 */
+      .content::-webkit-scrollbar-track {
+        background-color: #cac6c6 !important; /* 轨道的背景颜色 */
+        border-radius: 10px !important; /* 轨道的圆角 */
       }
 
-      .column {
-        flex-direction: column; /* 将弹性盒子的子元素排列方向设置为列方向（垂直排列） */
+      .content::-webkit-scrollbar-thumb {
+        background-color: grey !important; /* 滑块的颜色 */
+        border-radius: 10px !important; /* 滑块的圆角 */
+        border: 2px solid grey !important; /* 滑块与轨道之间的间隙 */
       }
 
-      .mg8 {
-        margin: 8px; /* 为元素四周添加8像素的外边距 */
+      .content::-webkit-scrollbar-thumb:hover {
+        background-color: grey !important; /* 悬停时滑块的颜色 */
       }
 
-      .mgr8 {
-        margin-right: 8px; /* 仅为元素的右侧添加8像素的外边距 */
+      /* 页头样式 */
+      .header {
+        background-color: var(--secondary-color); /* 背景颜色为次色（蓝色） */
+        color: var(--primary-color); /* 文本颜色为主色（白色） */
+        text-align: center; /* 文本居中对齐 */
+        padding: 20px; /* 内边距为 20 像素 */
+        font-size: 24px; /* 字体大小为 24 像素 */
+        position: sticky; /* 当滚动时，头部固定在页面顶部 */
+        top: 0; /* 固定在顶部 */
+        z-index: 1000; /* 使头部元素位于其他元素之上 */
       }
 
-      .mgt8 {
-        margin-top: 8px; /* 仅为元素的顶部添加8像素的外边距 */
+      /* 导航栏样式 */
+      .nav {
+        display: flex; /* 使用 Flexbox 布局 */
+        justify-content: center; /* 导航项居中对齐 */
+        background-color: var(--dark-color); /* 背景颜色为深色（深灰色） */
+        padding: 10px 0; /* 上下内边距为 10 像素 */
       }
 
-      .daoHang {
-        padding: 10px 20px; /* 为元素内容添加上下10像素，左右20像素的内边距 */
-        border-bottom: 1px solid rgb(190, 188, 188); /* 设置底部边框为1像素宽，颜色为灰色 */
-        font-size: 14px; /* 设置文字大小为14像素 */
-        color: #666; /* 设置文字颜色为深灰色 */
-        text-align: center; /* 使文字在水平上居中对齐 */
-        line-height: 40px; /* 设置行高为40像素，使文字在垂直方向居中对齐 */
+      /* 导航项样式 */
+      .nav-item {
+        color: var(--primary-color); /* 文本颜色为主色（白色） */
+        margin: 0 15px; /* 导航项之间的水平间距为 15 像素 */
+        padding: 10px 20px; /* 内边距为 10 像素（上下），20 像素（左右） */
+        cursor: pointer; /* 鼠标悬停时显示为手型 */
+        transition: background-color 0.3s ease; /* 背景色过渡效果，持续 0.3 秒 */
+        border-radius: 20px; /* 设置圆角边框半径为 20 像素 */
       }
 
-      /* 响应式设计，当屏幕宽度小于600像素时，应用以下样式 */
-      @media (max-width: 600px) {
-        .ceBian {
-          display: none; /* 隐藏侧边栏 */
+      /* 鼠标悬停导航项时的样式 */
+      .nav-item:hover {
+        background-color: var(--secondary-color); /* 背景颜色变为次色（蓝色） */
+      }
+
+      /* 主内容区域样式 */
+      .content {
+        display: flex; /* 使用 Flexbox 布局 */
+        flex: 1; /* 内容区域扩展填满剩余空间 */
+        padding: 20px; /* 内边距为 20 像素 */
+        justify-content: center; /* 水平居中对齐 */
+        align-items: flex-start; /* 垂直方向上从顶部对齐 */
+      }
+
+      /* 侧边栏样式 */
+      .sidebar {
+        width: 220px; /* 宽度为 220 像素 */
+        background-color: var(--light-color); /* 背景颜色为浅色（淡灰色） */
+        box-shadow: var(--shadow); /* 添加阴影效果 */
+        padding: 20px; /* 内边距为 20 像素 */
+        margin-right: 20px; /* 右外边距为 20 像素 */
+        border-radius: 10px; /* 圆角边框半径为 10 像素 */
+        text-align: center; /* 内容居中对齐 */
+      }
+
+      /* 头像图片样式 */
+      .profile-pic {
+        width: 100px; /* 宽度为 100 像素 */
+        height: 100px; /* 高度为 100 像素 */
+        border-radius: 50%; /* 设置为圆形 */
+        margin-bottom: 20px; /* 底部外边距为 20 像素 */
+        display: block; /* 将图片设为块级元素 */
+        margin-left: auto; /* 左外边距自动，居中对齐 */
+        margin-right: auto; /* 右外边距自动，居中对齐 */
+      }
+
+      /* 侧边栏标题样式 */
+      .sidebar h2 {
+        margin: 0; /* 去掉默认的外边距 */
+      }
+
+      /* 侧边栏按钮样式 */
+      .sidebar button {
+        width: 100%; /* 宽度填满父容器 */
+        padding: 10px; /* 内边距为 10 像素 */
+        background-color: var(--secondary-color); /* 背景颜色为次色（蓝色） */
+        color: var(--primary-color); /* 文本颜色为主色（白色） */
+        border: none; /* 无边框 */
+        border-radius: 20px; /* 圆角边框半径为 20 像素 */
+        cursor: pointer; /* 鼠标悬停时显示为手型 */
+        margin-top: 10px; /* 顶部外边距为 10 像素 */
+        transition: background-color 0.3s ease; /* 背景色过渡效果，持续 0.3 秒 */
+      }
+
+      /* 鼠标悬停按钮时的样式 */
+      .sidebar button:hover {
+        background-color: var(--accent-color); /* 背景颜色变为强调色（红色） */
+      }
+
+      /* 主内容部分样式 */
+      .main-content {
+        flex: 3; /* 占据剩余空间的 3 倍 */
+        background-color: var(--primary-color); /* 背景颜色为主色（白色） */
+        padding: 20px; /* 内边距为 20 像素 */
+        box-shadow: var(--shadow); /* 添加阴影效果 */
+        border-radius: 10px; /* 圆角边框半径为 10 像素 */
+        animation: fadeIn 1s ease-in-out; /* 淡入动画效果，持续 1 秒 */
+      }
+
+      /* 主内容区 section 元素的样式 */
+      .main-content section {
+        display: none; /* 默认不显示 */
+      }
+
+      /* 激活的 section 显示 */
+      .main-content section.active {
+        display: block; /* 设置为块级元素，显示内容 */
+      }
+
+      /* 页脚样式 */
+      .footer {
+        background-color: var(--dark-color); /* 背景颜色为深色（深灰色） */
+        color: var(--primary-color); /* 文本颜色为主色（白色） */
+        text-align: center; /* 文本居中对齐 */
+        padding: 10px; /* 内边距为 10 像素 */
+        font-size: 14px; /* 字体大小为 14 像素 */
+        position: relative; /* 相对定位 */
+      }
+
+      /* 定义淡入动画的关键帧 */
+      @keyframes fadeIn {
+        from {
+          opacity: 0; /* 从透明开始 */
+          transform: translateY(10px); /* 元素向下偏移 10 像素 */
         }
-        .neiRong {
-          flex-direction: column; /* 将内容区的子元素排列方向改为垂直方向 */
-        }
-        .shuJvQu {
-          flex-direction: column; /* 将数据区的子元素排列方向改为垂直方向 */
-        }
-        .qiTaQv {
-          margin-left: 8px; /* 仅为元素的左侧添加8像素的外边距 */
-        }
-        .shuJv {
-          margin: 0 0 8px; /* 为元素的底部添加8像素的外边距，清除顶部和左右边距 */
-          flex: auto; /* 允许元素根据内容自动调整大小 */
+        to {
+          opacity: 1; /* 最终完全显示 */
+          transform: translateY(0); /* 元素回到原位置 */
         }
       }
 
-      .neiRong::-webkit-scrollbar {
-        display: none; /* 隐藏滚动条（适用于webkit内核浏览器，如Chrome） */
+      /* 留言表单的样式 */
+      .leave-message {
+        display: flex; /* 使用 Flexbox 布局 */
+        flex-direction: column; /* 垂直布局 */
+        align-items: center; /* 内容水平居中对齐 */
+        margin-top: 20px; /* 顶部外边距为 20 像素 */
+        padding: 20px; /* 内边距为 20 像素 */
+        background-color: var(--light-color); /* 背景颜色为浅色（淡灰色） */
+        border-radius: 10px; /* 圆角边框半径为 10 像素 */
+        box-shadow: var(--shadow); /* 添加阴影效果 */
+      }
+
+      /* 留言表单中的输入框和文本域样式 */
+      .leave-message input,
+      .leave-message textarea {
+        width: 100%; /* 宽度填满父容器 */
+        padding: 10px; /* 内边距为 10 像素 */
+        margin-top: 10px; /* 顶部外边距为 10 像素 */
+        border: 2px solid #ccc; /* 边框为 2 像素的浅灰色 */
+        border-radius: 5px; /* 圆角边框半径为 5 像素 */
+        box-sizing: border-box; /* 包含边框和内边距 */
+      }
+
+      /* 禁止 textarea 的大小调整 */
+      .leave-message textarea {
+        resize: none; /* 禁止用户调整大小 */
+      }
+
+      /* 留言表单提交按钮的样式 */
+      .leave-message button {
+        margin-top: 10px; /* 顶部外边距为 10 像素 */
+        padding: 10px 20px; /* 内边距为 10 像素（上下），20 像素（左右） */
+        background-color: var(--secondary-color); /* 背景颜色为次色（蓝色） */
+        color: var(--primary-color); /* 文本颜色为主色（白色） */
+        border: none; /* 无边框 */
+        border-radius: 5px; /* 圆角边框半径为 5 像素 */
+        cursor: pointer; /* 鼠标悬停时显示为手型 */
+        transition: background-color 0.3s ease; /* 背景色过渡效果，持续 0.3 秒 */
+      }
+
+      /* 鼠标悬停提交按钮时的样式 */
+      .leave-message button:hover {
+        background-color: var(--accent-color); /* 背景颜色变为强调色（红色） */
       }
     </style>
   </head>
-  <body class="flex">
-    <!-- 应用弹性盒子布局，使子元素横向排列 -->
-    <!-- 侧边栏 -->
-    <div style="width: 200px; z-index: 2" class="ceBian white yinYing">
-      <!-- 设置侧边栏宽度为200像素，背景颜色为白色，添加阴影，并确保它位于页面的上层 -->
+  <body>
+    <!-- 页头部分 -->
+    <div class="header">欢迎来到我的博客！</div>
 
-      <!-- 头像栏 -->
-      <div
-        style="
-          padding: 10px;
-          align-items: center;
-          justify-content: center;
-          border-bottom: 1px solid #999;
-        "
-        class="flex"
-      >
-        <!-- 为头像栏设置内边距，并居中对齐内容，添加底部边框 -->
+    <!-- 导航栏 -->
+    <div class="nav">
+      <!-- 导航项，点击时调用 showContent() 函数切换显示内容 -->
+      <div class="nav-item" onclick="showContent('home')">首页</div>
+      <div class="nav-item" onclick="showContent('about')">个人简介</div>
+      <div class="nav-item" onclick="showContent('hobbies')">兴趣爱好</div>
+      <div class="nav-item" onclick="showContent('contact')">联系方式</div>
+      <div class="nav-item" onclick="showContent('message')">留言板</div>
+    </div>
+
+    <!-- 主体内容区域 -->
+    <div class="content">
+      <!-- 侧边栏 -->
+      <div class="sidebar">
+        <!-- 头像图片 -->
         <img
           src="https://img2.baidu.com/it/u=542419179,2173802594&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=998"
-          width="40px"
-          height="40px"
+          class="profile-pic"
           alt="ldx"
         />
-        <div style="margin-left: 10px">LDX</div>
-        <!-- 添加左边距10像素，显示用户名称 -->
+        <!-- 用户名 -->
+        <h2>LDX</h2>
+        <!-- 点赞按钮，点击时调用 dianZan() 函数 -->
+        <button id="点赞数" onclick="dianZan()">点赞数: 0</button>
       </div>
 
-      <!-- 导航栏 -->
-      <div class="flex1">
-        <div class="daoHang">导航</div>
-        <!-- 导航项 -->
-        <div class="daoHang">导航</div>
-        <div class="daoHang">导航</div>
-        <div class="daoHang">导航</div>
-        <div class="daoHang">导航</div>
-        <div class="daoHang">导航</div>
-      </div>
-    </div>
-
-    <!-- 主区域 -->
-    <div class="flex1 flex column">
-      <!-- 设置主区域为弹性盒子布局，垂直排列子元素，并占据剩余空间 -->
-
-      <!-- 头部栏 -->
-      <div style="height: 60px; z-index: 1" class="white yinYing">
-        <!-- 设置头部栏高度为60像素，背景颜色为白色，添加阴影，确保它位于较低层次 -->
-      </div>
-
-      <!-- 内容区 -->
-      <div style="overflow: auto" class="neiRong flex1 flex">
-        <!-- 设置内容区为弹性盒子布局，允许内容溢出时出现滚动条，子元素水平排列并占据剩余空间 -->
-
-        <!-- 正文区 -->
-        <div style="flex: 3" class="flex column mg8">
-          <!-- 设置正文区占据主区域的三分之二，并为其子元素垂直排列，四周添加8像素外边距 -->
-
-          <!-- 数据区 -->
-          <div class="shuJvQu flex">
-            <!-- 数据块 -->
-            <div style="height: 100px" class="shuJv flex1 white mgr8 yinYing">
-              <!-- 设置数据块高度为100像素，白色背景，添加右边距和阴影效果 -->
-            </div>
-            <div
-              style="height: 100px"
-              class="shuJv flex1 white mgr8 yinYing"
-            ></div>
-            <div
-              style="height: 100px"
-              class="shuJv flex1 white mgr8 yinYing"
-            ></div>
-            <div style="height: 100px" class="shuJv flex1 white yinYing"></div>
+      <!-- 主要内容显示区 -->
+      <div class="main-content">
+        <!-- 首页 section，默认显示（active） -->
+        <section id="home" class="active">
+          <h2>欢迎来到首页</h2>
+          <p>这里是LDX的个人博客，记录我的生活与学习。</p>
+        </section>
+        <!-- 个人简介 section -->
+        <section id="about">
+          <h2>个人简介</h2>
+          <p>我是LDX，一个热爱前端开发的学习者。</p>
+        </section>
+        <!-- 兴趣爱好 section -->
+        <section id="hobbies">
+          <h2>兴趣爱好</h2>
+          <p>我喜欢编程、阅读和运动。</p>
+        </section>
+        <!-- 联系方式 section -->
+        <section id="contact">
+          <h2>联系方式</h2>
+          <p>你可以通过邮箱联系我：ldx@example.com</p>
+        </section>
+        <!-- 留言板 section -->
+        <section id="message">
+          <h2>留言板</h2>
+          <div class="leave-message">
+            <!-- 用户名输入框 -->
+            <label for="username">用户名:</label>
+            <input type="text" id="username" name="username" />
+            <!-- 留言文本域 -->
+            <label for="message">留言:</label>
+            <textarea id="message" name="message" rows="4"></textarea>
+            <!-- 提交留言按钮，点击时调用 submitMessage() 函数 -->
+            <button onclick="submitMessage()">提交留言</button>
           </div>
-
-          <!-- 列表区 -->
-          <div class="flex column">
-            <!-- 列表项 -->
-            <div style="height: 160px" class="white mgt8 yinYing"></div>
-            <!-- 设置列表项高度为160像素，白色背景，添加顶部外边距和阴影效果 -->
-            <div style="height: 160px" class="white mgt8 yinYing"></div>
-            <div style="height: 160px" class="white mgt8 yinYing"></div>
-            <div style="height: 160px" class="white mgt8 yinYing"></div>
-            <div style="height: 160px" class="white mgt8 yinYing"></div>
-            <div style="height: 160px" class="white mgt8 yinYing"></div>
-            <div style="height: 160px" class="white mgt8 yinYing"></div>
-          </div>
-        </div>
-
-        <!-- 其他区 -->
-        <div style="flex: 1" class="qiTaQv flex column mgr8 mgt8">
-          <!-- 设置其他区占据主区域的四分之一，并为其子元素垂直排列，添加右边距和顶部外边距 -->
-
-          <!-- 提示区 -->
-          <div style="height: 150px" class="white yinYing">
-            <!-- 设置提示区高度为150像素，背景颜色为白色，并添加阴影效果 -->
-          </div>
-
-          <!-- 消息区 -->
-          <div style="height: 300px" class="white mgt8 yinYing">
-            <!-- 设置消息区高度为300像素，背景颜色为白色，添加顶部外边距和阴影效果 -->
-          </div>
-          <div style="height: 260px" class="white mgt8 yinYing">
-            <!-- 设置消息区高度为260像素，背景颜色为白色，添加顶部外边距和阴影效果 -->
-          </div>
-        </div>
+        </section>
       </div>
     </div>
+
+    <!-- 页脚 -->
+    <div class="footer">© 2024 LDX的个人博客. 保留所有权利.</div>
+
+    <script>
+      var dianZanShu = 0; /* 定义点赞数的变量，初始值为 0 */
+
+      /* 点赞函数，每点击一次增加点赞数 */
+      function dianZan() {
+        dianZanShu++; /* 点赞数加 1 */
+        document.getElementById("点赞数").innerText =
+          "点赞数: " + dianZanShu; /* 更新按钮文本 */
+      }
+
+      /* 显示相应内容的函数，根据传入的 sectionId 显示对应的内容区块 */
+      function showContent(sectionId) {
+        const sections = document.querySelectorAll(
+          ".main-content section"
+        ); /* 获取所有 section 元素 */
+        sections.forEach((section) => {
+          section.classList.remove(
+            "active"
+          ); /* 移除所有 section 的 active 类 */
+        });
+        document
+          .getElementById(sectionId)
+          .classList.add("active"); /* 给对应 id 的 section 添加 active 类 */
+      }
+
+      /* 留言提交函数，检查输入是否完整并给出反馈 */
+      function submitMessage() {
+        const username =
+          document.getElementById("username").value; /* 获取用户名输入框的值 */
+        const message =
+          document.getElementById("message").value; /* 获取留言文本域的值 */
+
+        if (username && message) {
+          /* 检查用户名和留言内容是否都已填写 */
+          alert("感谢您的留言, " + username + "!"); /* 提示感谢留言 */
+          document.getElementById("username").value = ""; /* 清空用户名输入框 */
+          document.getElementById("message").value = ""; /* 清空留言文本域 */
+        } else {
+          alert("请填写完整的用户名和留言内容！"); /* 提示用户填写完整信息 */
+        }
+      }
+    </script>
   </body>
 </html>
