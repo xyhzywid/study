@@ -79,6 +79,15 @@
         z-index: 1000; /* 设置拖尾元素的层级，使其在其他内容之上 */
       }
 
+      /* 烟花粒子的样式 */
+      .firework-particle {
+        position: fixed; /* 固定定位，粒子相对于视口定位 */
+        border-radius: 50%; /* 将粒子形状设置为圆形 */
+        pointer-events: none; /* 禁止粒子响应鼠标事件，避免干扰点击 */
+        mix-blend-mode: screen; /* 使用叠加混合模式，创造更亮的效果 */
+        opacity: 0.8; /* 设置粒子的初始透明度为 0.8 */
+      }
+
       /* 确保内容区域的滚动条样式应用 */
       .content {
         overflow: auto; /* 使内容区域可以滚动 */
@@ -447,6 +456,88 @@
         setTimeout(() => {
           trail.remove(); /* 设置200ms后自动移除拖尾元素，避免页面中出现过多的拖尾 */
         }, 200); /* 200ms后执行移除操作 */
+      });
+
+      // 随机生成粒子的颜色
+      function randomColor() {
+        const colors = [
+          "rgba(255, 99, 71, 1)", // 番茄红
+          "rgba(50, 205, 50, 1)", // 亮绿
+          "rgba(30, 144, 255, 1)", // 道奇蓝
+          "rgba(255, 215, 0, 1)", // 金色
+          "linear-gradient(45deg, #ff8c00, #ffd700)", // 多色渐变1
+          "linear-gradient(45deg, #ff1493, #ff69b4)", // 多色渐变2
+        ];
+        return colors[Math.floor(Math.random() * colors.length)];
+        /* 从预定义的颜色数组中随机选择一个颜色或渐变，作为粒子的颜色 */
+      }
+
+      // 创建烟花粒子
+      function createParticle(x, y) {
+        const particle =
+          document.createElement("div"); /* 创建一个 div 元素作为粒子 */
+        particle.className = "firework-particle"; /* 为粒子元素添加样式类 */
+
+        // 随机粒子尺寸
+        const size =
+          Math.random() * 10 +
+          5; /* 随机生成粒子尺寸，范围在 5px 到 15px 之间 */
+        particle.style.width = `${size}px`; /* 设置粒子的宽度 */
+        particle.style.height = `${size}px`; /* 设置粒子的高度 */
+
+        // 随机颜色或渐变
+        const color = randomColor(); /* 调用 randomColor 函数获取随机颜色 */
+        if (color.startsWith("linear-gradient")) {
+          particle.style.backgroundImage =
+            color; /* 如果是渐变色，则设置为背景图像 */
+        } else {
+          particle.style.backgroundColor =
+            color; /* 如果是单一颜色，则设置为背景颜色 */
+        }
+
+        // 设置粒子初始位置
+        particle.style.left = `${
+          x - size / 2
+        }px`; /* 设置粒子的初始水平位置，居中于鼠标点击点 */
+        particle.style.top = `${
+          y - size / 2
+        }px`; /* 设置粒子的初始垂直位置，居中于鼠标点击点 */
+
+        // 添加到文档中
+        document.body.appendChild(particle); /* 将粒子元素添加到文档的主体中 */
+
+        // 设置粒子移动动画
+        const angle = Math.random() * 360; /* 随机生成粒子的运动角度 */
+        const distance =
+          Math.random() * 80 +
+          40; /* 随机生成粒子的运动距离，范围在 40px 到 120px 之间 */
+        particle.style.transform = `translate(${
+          Math.cos(angle) * distance
+        }px, ${
+          Math.sin(angle) * distance
+        }px)`; /* 根据角度和距离设置粒子的移动方向和距离 */
+        particle.style.transition =
+          "transform 1s ease-out, opacity 1s ease-out"; /* 设置粒子的移动和淡出动画，时长为 1 秒，使用 ease-out 缓动效果 */
+
+        // 1秒后删除粒子
+        setTimeout(() => {
+          particle.style.opacity = "0"; /* 1 秒后开始将粒子的透明度降为 0 */
+          setTimeout(
+            () => particle.remove(),
+            1000
+          ); /* 透明度降为 0 后再等待 1 秒，然后删除粒子 */
+        }, 0);
+      }
+
+      // 处理鼠标点击事件
+      document.addEventListener("click", (event) => {
+        for (let i = 0; i < 30; i++) {
+          // 每次点击生成 30 个粒子
+          createParticle(
+            event.clientX,
+            event.clientY
+          ); /* 根据点击位置生成粒子 */
+        }
       });
 
       /* 显示指定内容部分 */
