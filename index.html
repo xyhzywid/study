@@ -65,14 +65,18 @@
 
       /* 鼠标拖尾效果的样式 */
       .trail {
-        position: fixed;
-        width: 12px;
-        height: 12px;
-        background: linear-gradient(45deg, #3498db, #d87ee67a);
-        border-radius: 50%;
-        pointer-events: none;
-        transition: transform 0.05s ease-out;
-        z-index: 1000;
+        position: fixed; /* 固定定位，使拖尾元素固定在视口内 */
+        width: 12px; /* 拖尾的宽度 */
+        height: 12px; /* 拖尾的高度 */
+        background: linear-gradient(
+          45deg,
+          #3498db,
+          #d87ee67a
+        ); /* 拖尾的背景色为蓝色到半透明粉紫色的渐变 */
+        border-radius: 50%; /* 拖尾的边框圆角设置为50%，使其变为圆形 */
+        pointer-events: none; /* 禁用拖尾元素的鼠标事件，以便不干扰其他页面元素 */
+        transition: transform 0.03s ease-out; /* 设置拖尾移动的过渡效果，时间为0.03秒，缓动效果 */
+        z-index: 1000; /* 设置拖尾元素的层级，使其在其他内容之上 */
       }
 
       /* 确保内容区域的滚动条样式应用 */
@@ -433,15 +437,16 @@
 
       /* 拖尾函数 */
       document.addEventListener("mousemove", function (event) {
-        const trail = document.createElement("div");
-        trail.className = "trail";
-        document.body.appendChild(trail);
+        const trail =
+          document.createElement("div"); /* 创建一个新的div元素作为拖尾 */
+        trail.className = "trail"; /* 给新创建的div元素添加.trail类 */
+        document.body.appendChild(trail); /* 将拖尾元素添加到文档的body中 */
 
-        trail.style.transform = `translate(${event.clientX}px, ${event.clientY}px)`;
+        trail.style.transform = `translate(${event.clientX}px, ${event.clientY}px)`; /* 根据鼠标的位置设置拖尾的transform属性，使其跟随鼠标移动 */
 
         setTimeout(() => {
-          trail.remove(); // 删除拖尾元素以避免过多占用空间
-        }, 500); // 500ms后删除
+          trail.remove(); /* 设置200ms后自动移除拖尾元素，避免页面中出现过多的拖尾 */
+        }, 200); /* 200ms后执行移除操作 */
       });
 
       /* 显示指定内容部分 */
