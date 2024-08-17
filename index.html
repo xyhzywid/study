@@ -18,13 +18,14 @@
         margin: 0;
         padding: 0;
       }
+
       /* 设置页面主体样式 */
       body {
         font-family: "Roboto", sans-serif; /* 使用 Roboto 字体 */
         background: linear-gradient(
           to bottom right,
           #3498db,
-          #2ecc71
+          #d87ee67a /* 蓝色和粉紫色 */
         ); /* 背景渐变色 */
         color: #333; /* 文字颜色 */
         display: flex; /* 使用 Flexbox 布局 */
@@ -35,7 +36,7 @@
       :root {
         /* 定义 CSS 变量 */
         --primary-color: #ffffff; /* 主要颜色（白色） */
-        --secondary-color: #3498db; /* 次要颜色（蓝色） */
+        --secondary-color: hsl(205, 99%, 73%); /* 次要颜色（蓝色） */
         --accent-color: #e74c3c; /* 强调颜色（红色） */
         --light-color: #f1f1f1; /* 浅色背景 */
         --dark-color: #333; /* 深色背景 */
@@ -60,6 +61,18 @@
         ); /* 渐变背景 */
         z-index: -1; /* 设置在所有内容下方 */
         opacity: 0.8; /* 设置透明度 */
+      }
+
+      /* 鼠标拖尾效果的样式 */
+      .trail {
+        position: fixed;
+        width: 12px;
+        height: 12px;
+        background: linear-gradient(45deg, #3498db, #d87ee67a);
+        border-radius: 50%;
+        pointer-events: none;
+        transition: transform 0.05s ease-out;
+        z-index: 1000;
       }
 
       /* 确保内容区域的滚动条样式应用 */
@@ -115,7 +128,11 @@
       .nav {
         display: flex; /* 使用 Flexbox 布局 */
         justify-content: center; /* 导航项居中对齐 */
-        background-color: var(--dark-color); /* 背景颜色为深色（深灰色） */
+        background-color: linear-gradient(
+          to bottom right,
+          #3498db,
+          #d87ee67a /* 蓝色和粉紫色 */
+        ); /* 背景渐变色 */ /* 背景颜色为深色（深灰色） */
         padding: 10px 0; /* 上下内边距 */
       }
 
@@ -286,9 +303,13 @@
       /* 浮动按钮样式 */
       .floating-button {
         position: fixed; /* 固定定位 */
-        bottom: 20px; /* 底部距离 20 像素 */
-        right: 20px; /* 右侧距离 20 像素 */
-        background-color: var(--secondary-color); /* 背景颜色为强调色（红色） */
+        bottom: 40px; /* 底部距离 20 像素 */
+        right: 15px; /* 右侧距离 20 像素 */
+        background-color: linear-gradient(
+          to bottom right,
+          #3498db,
+          #d87ee67a /* 蓝色和粉紫色 */
+        ); /* 背景渐变色 */ /* 背景颜色为蓝色 */
         color: var(--primary-color); /* 文本颜色为主色（白色） */
         padding: 15px; /* 内边距 */
         border-radius: 50%; /* 圆形按钮 */
@@ -299,9 +320,7 @@
       }
 
       .floating-button:hover {
-        background-color: var(
-          --dark-color
-        ); /* 鼠标悬停时背景颜色变为深色（深灰色） */
+        background-color: var(--primary-color); /* 鼠标悬停时背景颜色变为白色 */
       }
 
       /* 响应式设计 */
@@ -325,6 +344,9 @@
   <body>
     <!-- 页头 -->
     <div class="header">欢迎来到我的博客！</div>
+
+    <!-- 鼠标拖尾 -->
+    <div class="trail"></div>
 
     <!-- 导航栏 -->
     <div class="nav">
@@ -408,6 +430,19 @@
         document.getElementById("点赞数").innerText =
           "点赞数: " + dianZanShu; /* 更新按钮文本 */
       }
+
+      /* 拖尾函数 */
+      document.addEventListener("mousemove", function (event) {
+        const trail = document.createElement("div");
+        trail.className = "trail";
+        document.body.appendChild(trail);
+
+        trail.style.transform = `translate(${event.clientX}px, ${event.clientY}px)`;
+
+        setTimeout(() => {
+          trail.remove(); // 删除拖尾元素以避免过多占用空间
+        }, 500); // 500ms后删除
+      });
 
       /* 显示指定内容部分 */
       function showContent(sectionId) {
